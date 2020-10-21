@@ -1,6 +1,6 @@
 {
-    "allowCompoundWords": true,
-    "words": [
-        "esnext"
-    ]
+  "allowCompoundWords": true,
+  "words": [
+    "esnext"
+  ]
 }

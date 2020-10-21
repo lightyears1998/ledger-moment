@@ -12,6 +12,9 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
+  "engines": {
+    "node": ">=12"
+  },
   "dependencies": {
     "axios": "^0.20.0",
     "next": "9.5.5",

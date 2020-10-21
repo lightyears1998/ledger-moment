@@ -14,6 +14,9 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
+  "engines": {
+    "node": ">=12"
+  },
   "dependencies": {
     "koa": "^2.13.0",
     "reflect-metadata": "^0.1.13",
