@@ -1,7 +1,16 @@
 import Head from 'next/head'
+import { useEffect, useState } from 'react'
 import styles from '../styles/Home.module.css'
+import axios from 'axios'
 
 export default function Home() {
+  const [title, setTitle] = useState('')
+
+  useEffect(async () => {
+    const res = await axios.get('/api/hello')
+    setTitle(res.data.name)
+  }, [])
+
   return (
     <div className={styles.container}>
       <Head>
@@ -11,7 +20,7 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
+          Welcome to <a href="https://nextjs.org">{title}</a>
         </h1>
 
         <p className={styles.description}>
