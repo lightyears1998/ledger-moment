@@ -1,3 +1,10 @@
+# 运行依赖
 node_modules
 
+# 由 `tsc` 编译的 JS 文件
+lib
+
+# 开发工具
 .vscode/**
+!.vscode/launch.json
+!.vscode/tasks.json
