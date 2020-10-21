@@ -8,3 +8,6 @@ lib
 .vscode/**
 !.vscode/launch.json
 !.vscode/tasks.json
+
+## 日志
+yarn-*.log
