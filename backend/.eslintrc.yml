@@ -10,7 +10,7 @@ plugins:
   - import
 extends:
   # react-app
-  # plugin:@typescript-eslint/recommended
+  - plugin:@typescript-eslint/recommended
   - plugin:import/errors
   - plugin:import/warnings
   - plugin:import/typescript
@@ -19,5 +19,8 @@ globals:
   Atomics: readonly
   SharedArrayBuffer: readonly
 rules:
+  indent:
+    - warn
+    - 2
   no-console:
     - off

@@ -1,5 +1,6 @@
 import Koa from "koa";
 import { ApolloServer, gql } from "apollo-server-koa";
+import { PORT } from "./config";
 
 const typeDefs = gql`
   type Query {
@@ -14,4 +15,4 @@ const server = new ApolloServer({ typeDefs, resolvers });
 const app = new Koa();
 app.use(server.getMiddleware());
 
-app.listen({ port: 4000 }, () => console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`));
+app.listen({ port: PORT }, () => console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`));

@@ -8,14 +8,15 @@
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "name": "nodemon",
-      "program": "${workspaceFolder}/src/index.ts",
+      "program": "${workspaceFolder}/lib/index.js",
       "request": "launch",
       "restart": true,
       "runtimeExecutable": "nodemon",
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "type": "pwa-node"
+      "type": "pwa-node",
+      "preLaunchTask": "tsc: watch - tsconfig.json"
     }
   ]
 }
