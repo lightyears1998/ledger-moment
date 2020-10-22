@@ -10,7 +10,9 @@ const typeDefs = gql`
 
 const resolvers = { Query: { hello: () => "Hello world!" } };
 
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({
+  typeDefs, resolvers, playground: true
+});
 
 const app = new Koa();
 app.use(server.getMiddleware());
