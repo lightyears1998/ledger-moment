@@ -14,3 +14,15 @@
 | 插件 ID | 功能 | 配置文件 |
 | --- | --- | --- |
 | streetSideSoftware.code-spell-checker | 拼写检查 | cspell.json |
+
+推荐的 VS Code 设置如下：
+
+``` json
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "modifications"
+}
+```
