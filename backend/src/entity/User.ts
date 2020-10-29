@@ -1,12 +1,17 @@
 import { Column, PrimaryGeneratedColumn } from "typeorm";
+import { Field, ObjectType } from "type-graphql";
 
+@ObjectType({ description: "User Model" })
 export class User {
-    @PrimaryGeneratedColumn("increment")
-    userId!: number
+  @Field()
+  @PrimaryGeneratedColumn("increment")
+  userId!: number
 
-    @Column()
-    username!: string
+  @Field()
+  @Column()
+  username!: string
 
-    @Column()
-    passwordHash!: string
+  @Field()
+  @Column()
+  passwordHash!: string
 }
