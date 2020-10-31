@@ -20,6 +20,7 @@ import {
 import { UserResolver } from "./resolver";
 import { AppContext } from "./router";
 import { genSecret } from "./utils";
+import { redis } from "./utils/redis";
 
 async function bootstrap() {
   // 设置 Database 路径
@@ -60,9 +61,7 @@ async function bootstrap() {
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24 * 30 /* 30 天 */
     },
-    store: redisStore({
-      client:
-    }) as unknown as koaSession.SessionStore
+    store: redisStore({ client: redis }) as unknown as koaSession.SessionStore
   }));
   app.use(server.getMiddleware());
 

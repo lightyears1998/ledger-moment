@@ -1,3 +1,7 @@
-import { Redis } from "ioredis";
+import Redis from "ioredis";
 
-export const redis = new Redis({ pasword: "" });
+import {
+  REDIS_HOST, REDIS_PORT, REDIS_PASSWORD
+} from "../config";
+
+export const redis = new Redis(REDIS_PORT, REDIS_HOST, { password: REDIS_PASSWORD });
