@@ -5,6 +5,7 @@
         "airbnb",
         "dbaeumer",
         "esnext",
+        "qfstudio",
         "tslib",
         "typedi",
         "typeorm"

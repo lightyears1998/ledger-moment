@@ -27,9 +27,13 @@
     "config": "^3.3.2",
     "fs-extra": "^9.0.1",
     "graphql": "^15.3.0",
+    "ioredis": "^4.19.1",
     "koa": "^2.13.0",
+    "koa-generic-session": "^2.1.1",
+    "koa-redis": "^4.0.1",
     "koa-response-time": "^2.1.0",
     "koa-router": "^9.4.0",
+    "randomstring": "^1.1.5",
     "reflect-metadata": "^0.1.13",
     "type-graphql": "^1.1.0",
     "typedi": "^0.8.0",
@@ -40,8 +44,12 @@
     "@lightyears1998/eslint-config-lightyears-style": "^1.2.0",
     "@types/config": "^0.0.36",
     "@types/fs-extra": "^9.0.2",
+    "@types/ioredis": "^4.17.6",
+    "@types/koa-generic-session": "^1.0.4",
+    "@types/koa-redis": "^4.0.0",
     "@types/koa-response-time": "^2.1.0",
     "@types/node": "^14.14.0",
+    "@types/randomstring": "^1.1.6",
     "@typescript-eslint/eslint-plugin": "^4.5.0",
     "@typescript-eslint/parser": "^4.5.0",
     "add": "^2.0.6",
@@ -52,7 +60,6 @@
     "nodemon": "^2.0.6",
     "ts-node": "^9.0.0",
     "ts-node-dev": "^1.0.0",
-    "typescript": "^4.0.3",
-    "yarn": "^1.22.10"
+    "typescript": "^4.0.3"
   }
 }

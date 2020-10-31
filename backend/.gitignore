@@ -12,5 +12,9 @@ lib
 ## 日志
 yarn-*.log
 
+# 配置文件
+config/**
+!config/default.yml
+
 # 运行时数据
 var

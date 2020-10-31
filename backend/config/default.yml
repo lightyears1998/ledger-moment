@@ -1,2 +1,10 @@
-http:
+app:
   port: 4000
+  secret: null
+  session:
+    key: ledger-moment
+
+redis:
+  host: localhost
+  port: 6379
+  password: null

@@ -1,18 +1,17 @@
-import { rootCertificates } from "tls";
-
 import {
-  Args,
-  Ctx,
-  Info,
-  Query, Resolver, Root
+  Query, Resolver, Ctx
 } from "type-graphql";
 
 import { User } from "../entity";
+import { AppContext } from "../router/context";
+
 
 @Resolver()
 export class UserResolver {
   @Query(() => [User])
-  async users(): Promise<User[]> {
+  async users(@Ctx() ctx: AppContext): Promise<User[]> {
+    console.log(ctx);
+
     const user = new User();
     user.userId = 1;
     user.username = "123";

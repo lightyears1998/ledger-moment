@@ -10,10 +10,16 @@ import fs from "fs-extra";
 import { Container } from "typedi";
 import responseTimeMiddleware from "koa-response-time";
 import corsMiddleware from "@koa/cors";
+import sessionMiddleware from "koa-generic-session";
+import redisStore from "koa-redis";
+import koaSession from "koa-generic-session";
 
-import { VAR_DIR, PORT } from "./config";
+import {
+  VAR_DIR, PORT, SECRET, SESSION_KEY
+} from "./config";
 import { UserResolver } from "./resolver";
-
+import { AppContext } from "./router";
+import { genSecret } from "./utils";
 
 async function bootstrap() {
   // 设置 Database 路径
@@ -38,12 +44,26 @@ async function bootstrap() {
   console.log("📁 Schema prints to: " + schemaPath);
 
   // 初始化 ApolloServer
-  const server = new ApolloServer({ schema, playground: true });
+  const server = new ApolloServer({
+    schema, playground: true, context: (ctx: AppContext) => ctx
+  });
 
   // 初始化 Koa
   const app = new Koa();
+  app.keys = [SECRET ? SECRET : genSecret()];
   app.use(responseTimeMiddleware({ hrtime: true }));
   app.use(corsMiddleware({ credentials: true }));
+  app.use(sessionMiddleware({
+    key: SESSION_KEY,
+    cookie: {
+      signed: true,
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 30 /* 30 天 */
+    },
+    store: redisStore({
+      client:
+    }) as unknown as koaSession.SessionStore
+  }));
   app.use(server.getMiddleware());
 
   // 运行 Koa
