@@ -16,11 +16,11 @@ const getConfig = <T>(configPath: string, defaultValue?: T): T => {
 
 
 // APP
-export const VAR_DIR = path.join(process.cwd(), "./var");
+export const APP_VAR_DIR = path.join(process.cwd(), "./var");
 
-export const SECRET = getConfig<string | null>("app.secret", null);
-export const PORT = getConfig("app.port", 4000);
-export const SESSION_KEY = getConfig("app.session.key", "ledger-moment");
+export const APP_SECRET = getConfig<string | null>("app.secret", null);
+export const APP_PORT = getConfig("app.port", 4000);
+export const APP_SESSION_KEY = getConfig("app.session.key", "ledger-moment");
 
 // Redis
 export const REDIS_HOST = getConfig("redis.host", "localhost");

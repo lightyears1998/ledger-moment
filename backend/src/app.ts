@@ -3,9 +3,8 @@ import path from "path";
 import Koa from "koa";
 import { ApolloServer } from "apollo-server-koa";
 import { buildSchema } from "type-graphql";
-import { printSchema } from "graphql";
-import * as typeorm from "typeorm";
-import { createConnection } from "typeorm";
+import { GraphQLSchema, printSchema } from "graphql";
+import { useContainer, createConnection } from "typeorm";
 import fs from "fs-extra";
 import { Container } from "typedi";
 import responseTimeMiddleware from "koa-response-time";
@@ -15,47 +14,55 @@ import redisStore from "koa-redis";
 import koaSession from "koa-generic-session";
 
 import {
-  VAR_DIR, PORT, SECRET, SESSION_KEY
+  APP_VAR_DIR, APP_PORT, APP_SECRET, APP_SESSION_KEY
 } from "./config";
 import { UserResolver } from "./resolver";
-import { AppContext } from "./router";
-import { genSecret } from "./utils";
-import { redis } from "./utils/redis";
+import { AppContext } from "./context";
+import { genSecret, redis } from "./utils";
+import * as entities from "./entity";
 
-async function bootstrap() {
-  // 设置 Database 路径
-  const dbPath = path.join(VAR_DIR, "./database.sqlite3");
+
+async function setupDatabase(): Promise<void> {
+  const dbPath = path.join(APP_VAR_DIR, "./database.sqlite3");
   await fs.ensureDir(path.dirname(dbPath));
   console.log("💾 Using sqlite database: " + dbPath);
 
-  // 设置 DI 容器
-  typeorm.useContainer(Container);
+  useContainer(Container);
 
-  // 连接数据库
   await createConnection({
     type: "better-sqlite3",
     database: dbPath,
-    synchronize: true
+    synchronize: true,
+    entities: [entities.User]
   });
+}
 
-  // 生成 GraphQLSchema
-  const schema = await buildSchema({ resolvers: [UserResolver] });
-  const schemaPath = path.join(VAR_DIR, "./schema.graphql");
+
+async function setupGraphQLSchema(): Promise<GraphQLSchema> {
+  const schema = await buildSchema({ resolvers: [UserResolver], container: Container });
+  const schemaPath = path.join(APP_VAR_DIR, "./schema.graphql");
   await fs.writeFile(schemaPath, printSchema(schema));
   console.log("📁 Schema prints to: " + schemaPath);
 
-  // 初始化 ApolloServer
+  return schema;
+}
+
+
+async function setupApolloServer(schema: GraphQLSchema) {
   const server = new ApolloServer({
     schema, playground: true, context: (ctx: AppContext) => ctx
   });
 
-  // 初始化 Koa
+  return server;
+}
+
+async function setupKoa(server: ApolloServer): Promise<Koa> {
   const app = new Koa();
-  app.keys = [SECRET ? SECRET : genSecret()];
+  app.keys = [APP_SECRET ? APP_SECRET : genSecret()];
   app.use(responseTimeMiddleware({ hrtime: true }));
   app.use(corsMiddleware({ credentials: true }));
   app.use(sessionMiddleware({
-    key: SESSION_KEY,
+    key: APP_SESSION_KEY,
     cookie: {
       signed: true,
       httpOnly: true,
@@ -65,8 +72,20 @@ async function bootstrap() {
   }));
   app.use(server.getMiddleware());
 
-  // 运行 Koa
-  app.listen({ port: PORT }, () => console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`));
+  return app;
+}
+
+async function bootstrap() {
+  await setupDatabase();
+  const schema = await setupGraphQLSchema();
+  const server = await setupApolloServer(schema);
+  const app = await setupKoa(server);
+
+  await new Promise((resolve) => {
+    app.listen({ port: APP_PORT }, resolve);
+  });
+
+  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
 }
 
 bootstrap();

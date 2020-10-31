@@ -127,12 +127,9 @@
     vary "^1.1.2"
 
 "@lightyears1998/eslint-config-lightyears-style@^1.2.0":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@lightyears1998/eslint-config-lightyears-style/-/eslint-config-lightyears-style-1.2.1.tgz#85638d8dcbaa80efc51d4ff8de6ffc8fc7045c06"
-  integrity sha512-e27OxA3+tOd9xbtr7tEdtMltILq6333nzA2JJDGLBq/1Gy6zfr0sRA9KPmDjBIP6U3nYLzCnFqtssDECMNUkVg==
-  dependencies:
-    eslint-plugin-import "^2.22.1"
-    eslint-plugin-sort-keys-fix "^1.1.1"
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@lightyears1998/eslint-config-lightyears-style/-/eslint-config-lightyears-style-1.3.0.tgz#b124c855da6973abc3740067b6aee38b6fc28add"
+  integrity sha512-hjiCFhmByyS+iJO2TSA1Fj8I8RpZLWPTmM+IKrhBHwtixGJ0QHbgAxDDtsQqwEyFCioYDqLkHNlWnHUt5ewY6g==
 
 "@nodelib/fs.scandir@2.1.3":
   version "2.1.3"
@@ -2005,13 +2002,6 @@ eslint-plugin-import@^2.22.1:
     read-pkg-up "^2.0.0"
     resolve "^1.17.0"
     tsconfig-paths "^3.9.0"
-
-eslint-plugin-sort-keys-fix@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-sort-keys-fix/-/eslint-plugin-sort-keys-fix-1.1.1.tgz#2ed201b53fd4a89552c6e2abd38933f330a4b62e"
-  integrity sha512-x02SLBg+8OEaoT9vvMbsgeInw17wjHLsa9cOieIVQY+xMNRiXBbyMWw+NiBoxYyJIR4QKDOPDofCjQdoSvltQg==
-  dependencies:
-    requireindex "~1.2.0"
 
 eslint-scope@^5.0.0, eslint-scope@^5.1.1:
   version "5.1.1"
@@ -4437,11 +4427,6 @@ require-main-filename@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/require-main-filename/-/require-main-filename-2.0.0.tgz#d0b329ecc7cc0f61649f62215be69af54aa8989b"
   integrity sha512-NKN5kMDylKuldxYLSUfrbo5Tuzh4hd+2E8NPPX02mZtn1VuREQToYe/ZdlJy+J3uCpfaiGF05e7B8W0iXbQHmg==
-
-requireindex@~1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/requireindex/-/requireindex-1.2.0.tgz#3463cdb22ee151902635aa6c9535d4de9c2ef1ef"
-  integrity sha512-L9jEkOi3ASd9PYit2cwRfyppc9NoABujTP8/5gFcbERmo5jUoAKovIC3fsF17pkTnGsrByysqX+Kxd2OTNI1ww==
 
 resolve-dir@^1.0.0, resolve-dir@^1.0.1:
   version "1.0.1"
