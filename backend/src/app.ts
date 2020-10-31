@@ -13,7 +13,11 @@ async function bootstrap() {
   await fs.ensureDir(path.dirname(dbPath));
   console.log("💾 Using sqlite database: " + dbPath);
 
-  await createConnection({ type: "better-sqlite3", database: dbPath });
+  await createConnection({
+    type: "better-sqlite3",
+    database: dbPath,
+    synchronize: true
+  });
 
   const schema = await buildSchema({ resolvers: [UserResolver] });
   const schemaPath = path.join(VAR_DIR, "./schema.graphql");

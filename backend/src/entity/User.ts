@@ -1,7 +1,10 @@
-import { Column, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column, Entity, PrimaryGeneratedColumn
+} from "typeorm";
 import { Field, ObjectType } from "type-graphql";
 
-@ObjectType({ description: "User Model" })
+@ObjectType()
+@Entity()
 export class User {
   @Field()
   @PrimaryGeneratedColumn("increment")
