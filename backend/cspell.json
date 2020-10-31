@@ -3,8 +3,10 @@
     "allowCompoundWords": true,
     "words": [
         "airbnb",
+        "dbaeumer",
         "esnext",
         "tslib",
+        "typedi",
         "typeorm"
     ]
 }

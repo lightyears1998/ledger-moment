@@ -9,12 +9,17 @@
 - typegraphql
 - typeorm
 
+## Apollo TypeGraph Playground
+
+使用 Cookies 时，需要设置 `"request.credentials": "include"`。
+
 ## VS Code 插件
 
 在 ledger-moment 的开发过程中使用了以下 VS Code 插件：
 
 | 插件 ID | 功能 | 配置文件 |
 | --- | --- | --- |
+| dbaeumer.vscode-eslint | ESLint 插件 | eslintrc.yml |
 | streetSideSoftware.code-spell-checker | 拼写检查 | cspell.json |
 
 推荐的 VS Code 设置如下：
@@ -23,8 +28,6 @@
 {
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
-  },
-  "editor.formatOnSave": true,
-  "editor.formatOnSaveMode": "modifications"
+  }
 }
 ```
