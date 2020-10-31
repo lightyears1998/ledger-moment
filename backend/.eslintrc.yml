@@ -11,16 +11,10 @@ plugins:
 extends:
   # react-app
   - plugin:@typescript-eslint/recommended
-  - plugin:import/errors
-  - plugin:import/warnings
-  - plugin:import/typescript
   - "@lightyears1998/lightyears-style"
 globals:
   Atomics: readonly
   SharedArrayBuffer: readonly
 rules:
-  indent:
-    - warn
-    - 2
   no-console:
     - off

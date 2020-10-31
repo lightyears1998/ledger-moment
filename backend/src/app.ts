@@ -1,12 +1,15 @@
+import path from "path";
+
 import Koa from "koa";
 import { ApolloServer } from "apollo-server-koa";
-import { UserResolver } from "./resolver";
 import { buildSchema } from "type-graphql";
 import { printSchema } from "graphql";
 import { createConnection } from "typeorm";
-import { VAR_DIR, PORT } from "./config";
-import path from "path";
 import fs from "fs-extra";
+
+import { VAR_DIR, PORT } from "./config";
+import { UserResolver } from "./resolver";
+
 
 async function bootstrap() {
   const dbPath = path.join(VAR_DIR, "./database.sqlite3");

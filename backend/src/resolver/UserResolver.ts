@@ -1,10 +1,12 @@
 import { rootCertificates } from "tls";
+
 import {
   Args,
   Ctx,
   Info,
   Query, Resolver, Root
 } from "type-graphql";
+
 import { User } from "../entity";
 
 @Resolver()
