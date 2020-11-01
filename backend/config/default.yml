@@ -4,6 +4,9 @@ app:
   session:
     key: ledger-moment
 
+query:
+  complexity-limit: 65535
+
 redis:
   host: localhost
   port: 6379

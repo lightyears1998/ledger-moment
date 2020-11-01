@@ -12,9 +12,12 @@ import corsMiddleware from "@koa/cors";
 import sessionMiddleware from "koa-generic-session";
 import redisStore from "koa-redis";
 import koaSession from "koa-generic-session";
+import {
+  fieldExtensionsEstimator, getComplexity, simpleEstimator
+} from "graphql-query-complexity";
 
 import {
-  APP_VAR_DIR, APP_PORT, APP_SECRET, APP_SESSION_KEY
+  APP_VAR_DIR, APP_PORT, APP_SECRET, APP_SESSION_KEY, QUERY_COMPLEXITY_LIMIT
 } from "./config";
 import { UserResolver } from "./resolver";
 import { AppContext } from "./context";
@@ -33,6 +36,7 @@ async function setupDatabase(): Promise<void> {
     type: "better-sqlite3",
     database: dbPath,
     synchronize: true,
+    logging: "all",
     entities: [entities.User]
   });
 }
@@ -50,7 +54,32 @@ async function setupGraphQLSchema(): Promise<GraphQLSchema> {
 
 async function setupApolloServer(schema: GraphQLSchema) {
   const server = new ApolloServer({
-    schema, playground: true, context: (ctx: AppContext) => ctx
+    schema,
+    playground: true,
+    context: (ctx: AppContext) => ctx,
+    plugins: [
+      {
+        /*
+         * GraphQL 查询复杂度插件
+         * 参阅：https://github.com/MichalLytek/type-graphql/blob/1d00afe6da943d57bf64d46814c67c89f2e1af82/docs/complexity.md
+         */
+        requestDidStart: () => ({
+          didResolveOperation({ request, document }) {
+            const complexity = getComplexity({
+              schema,
+              operationName: request.operationName,
+              query: document,
+              variables: request.variables,
+              estimators: [fieldExtensionsEstimator(), simpleEstimator({ defaultComplexity: 1 })]
+            });
+
+            if (complexity > QUERY_COMPLEXITY_LIMIT) {
+              throw new Error(`本次请求具有复杂度 ${complexity}，因超过复杂度上限限制 ${QUERY_COMPLEXITY_LIMIT} 而未被执行。`);
+            }
+          }
+        })
+      }
+    ]
   });
 
   return server;
