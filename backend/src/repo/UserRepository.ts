@@ -6,7 +6,7 @@ import { User } from "../entity";
 @Service()
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
-  findByUsername() {
-    return 1;
+  async findByUsername(username: string): Promise<User | undefined> {
+    return this.findOne({ username });
   }
 }

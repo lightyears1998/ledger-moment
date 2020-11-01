@@ -22,6 +22,9 @@ export const APP_SECRET = getConfig<string | null>("app.secret", null);
 export const APP_PORT = getConfig("app.port", 4000);
 export const APP_SESSION_KEY = getConfig("app.session.key", "ledger-moment");
 
+// Query Limit
+export const QUERY_COMPLEXITY_LIMIT = getConfig("query.complexity-limit", 65535);
+
 // Redis
 export const REDIS_HOST = getConfig("redis.host", "localhost");
 export const REDIS_PORT = getConfig("redis.port", 6379);

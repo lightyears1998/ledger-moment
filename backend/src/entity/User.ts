@@ -1,13 +1,15 @@
 import {
   Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, Unique, UpdateDateColumn
 } from "typeorm";
-import { Field, ObjectType } from "type-graphql";
+import {
+  Field, ID, ObjectType
+} from "type-graphql";
 
 @ObjectType()
 @Entity()
 @Unique("UNIQUE_username", ["username"])
 export class User {
-  @Field()
+  @Field(() => ID)
   @PrimaryGeneratedColumn("increment")
   userId!: number
 
