@@ -5,19 +5,20 @@ import { ApolloServer } from "apollo-server-koa";
 import { buildSchema } from "type-graphql";
 import { GraphQLSchema, printSchema } from "graphql";
 import { useContainer, createConnection } from "typeorm";
-import fs from "fs-extra";
+import fs, { copySync } from "fs-extra";
 import { Container } from "typedi";
 import responseTimeMiddleware from "koa-response-time";
 import corsMiddleware from "@koa/cors";
-import sessionMiddleware from "koa-generic-session";
+import sessionMiddleware from "koa-session";
 import redisStore from "koa-redis";
-import koaSession from "koa-generic-session";
 import {
   fieldExtensionsEstimator, getComplexity, simpleEstimator
 } from "graphql-query-complexity";
+import router from "koa-router";
+import c from "config";
 
 import {
-  APP_VAR_DIR, APP_PORT, APP_SECRET, APP_SESSION_KEY, QUERY_COMPLEXITY_LIMIT
+  APP_VAR_DIR, APP_PORT, APP_SECRET, QUERY_COMPLEXITY_LIMIT
 } from "./config";
 import { UserResolver } from "./resolver";
 import { AppContext } from "./context";
@@ -56,7 +57,7 @@ async function setupApolloServer(schema: GraphQLSchema) {
   const server = new ApolloServer({
     schema,
     playground: true,
-    context: (ctx: AppContext) => ctx,
+    context: ({ ctx }) => ctx,
     plugins: [
       {
         /*
@@ -87,18 +88,12 @@ async function setupApolloServer(schema: GraphQLSchema) {
 
 async function setupKoa(server: ApolloServer): Promise<Koa> {
   const app = new Koa();
+
   app.keys = [APP_SECRET ? APP_SECRET : genSecret()];
+
   app.use(responseTimeMiddleware({ hrtime: true }));
   app.use(corsMiddleware({ credentials: true }));
-  app.use(sessionMiddleware({
-    key: APP_SESSION_KEY,
-    cookie: {
-      signed: true,
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 * 30 /* 30 天 */
-    },
-    store: redisStore({ client: redis }) as unknown as koaSession.SessionStore
-  }));
+  app.use(sessionMiddleware({ key: "moment:sess" }, app));
   app.use(server.getMiddleware());
 
   return app;
