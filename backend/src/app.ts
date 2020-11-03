@@ -1,4 +1,4 @@
-import path from "path";
+import path, { resolve } from "path";
 
 import Koa from "koa";
 import { ApolloServer } from "apollo-server-koa";
@@ -21,6 +21,7 @@ import {
 import { UserResolver } from "./resolver";
 import { genSecret, redis } from "./utils";
 import * as entities from "./entity";
+import * as resolvers from "./resolver";
 
 
 async function setupDatabase(): Promise<void> {
@@ -35,13 +36,21 @@ async function setupDatabase(): Promise<void> {
     database: dbPath,
     synchronize: true,
     logging: "all",
-    entities: [entities.User]
+    entities: [
+      entities.User,
+      entities.Account,
+      entities.Ledger,
+      entities.Record
+    ]
   });
 }
 
 
 async function setupGraphQLSchema(): Promise<GraphQLSchema> {
-  const schema = await buildSchema({ resolvers: [UserResolver], container: Container });
+  const schema = await buildSchema({
+    resolvers: [resolvers.UserResolver, resolvers.LegerResolver],
+    container: Container
+  });
   const schemaPath = path.join(APP_VAR_DIR, "./schema.graphql");
   await fs.writeFile(schemaPath, printSchema(schema));
   console.log("📁 Schema prints to: " + schemaPath);

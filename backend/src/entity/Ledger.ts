@@ -1,4 +1,6 @@
-import { Field, ID } from "type-graphql";
+import {
+  Field, ID, ObjectType
+} from "type-graphql";
 import {
   Column,
   CreateDateColumn,
@@ -7,6 +9,7 @@ import {
 
 
 @Entity()
+@ObjectType()
 export class Ledger {
   @Field(() => ID)
   @PrimaryGeneratedColumn("uuid")
