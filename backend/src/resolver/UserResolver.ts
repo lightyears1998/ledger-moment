@@ -17,30 +17,21 @@ export class UserResolver {
   private readonly userRepository!: UserRepository
 
 
-  @Query(() => [User])
+  @Query(() => [User], {
+    complexity: ({ args, childComplexity }) => {
+      return 1 + childComplexity + (args.take ?? 0);
+    }
+  })
   async users(
-    @Ctx() ctx: AppContext,
-    @Arg("skip", () => Int, { nullable: true }) skip?: number,
-    @Arg("take", () => Int, { nullable: true }) take?: number
+    @Arg("skip", () => Int, { nullable: true, defaultValue: 0 }) skip?: number,
+    @Arg("take", () => Int, { nullable: true, defaultValue: 20 }) take?: number
   ): Promise<User[]> {
-    console.log(ctx);
-
-    const user = new User();
-    user.userId = 1;
-    user.username = "123";
-    user.passwordHash = "123";
-    return [user];
+    const users = this.userRepository.find({ skip, take });
+    return users;
   }
 
   @Query(() => User, { nullable: true })
   async whoami(@Ctx() ctx: AppContext): Promise<User | undefined> {
-    console.log(ctx.session);
-
-    if (ctx.session) {
-      console.log(ctx.session.toJSON());
-      ctx.session.count = 1;
-    }
-
     if (ctx.session) {
       return ctx.session.user;
     }
@@ -78,7 +69,7 @@ export class UserResolver {
   }
 
   @Mutation(() => Boolean)
-  async userLogout(@Ctx() ctx: AppContext) {
+  async userLogout(@Ctx() ctx: AppContext): Promise<boolean> {
     ctx.session = null;
     return true;
   }
