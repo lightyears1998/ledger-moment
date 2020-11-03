@@ -383,13 +383,6 @@
   dependencies:
     "@types/koa" "*"
 
-"@types/koa-generic-session@^1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@types/koa-generic-session/-/koa-generic-session-1.0.4.tgz#3a826455db8452a95e2c593ba6e323aadd93ce55"
-  integrity sha512-0ON5sWhn3Hs6O978KtAd4TZesTYZAfyYUZyiZ5+p4BSG7NA06q9PlLk60iVV9dDdEAnwoJKBTEOFaJiUJDIHRA==
-  dependencies:
-    "@types/koa" "*"
-
 "@types/koa-redis@^4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@types/koa-redis/-/koa-redis-4.0.0.tgz#648db9682353715e288c65fe50f9aaec6ad87608"
@@ -5331,6 +5324,11 @@ type-check@^0.4.0, type-check@~0.4.0:
   integrity sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==
   dependencies:
     prelude-ls "^1.2.1"
+
+type-fest@^0.18.0:
+  version "0.18.0"
+  resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.18.0.tgz#2edfa6382d48653707344f7fccdb0443d460e8d6"
+  integrity sha512-fbDukFPnJBdn2eZ3RR+5mK2slHLFd6gYHY7jna1KWWy4Yr4XysHuCdXRzy+RiG/HwG4WJat00vdC2UHky5eKiQ==
 
 type-fest@^0.8.1:
   version "0.8.1"

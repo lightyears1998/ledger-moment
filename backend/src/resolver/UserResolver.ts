@@ -1,5 +1,3 @@
-import { EROFS } from "constants";
-
 import bcrypt from "bcrypt";
 import {
   Query, Resolver, Ctx, Mutation, Arg, Int
@@ -38,7 +36,14 @@ export class UserResolver {
   async whoami(@Ctx() ctx: AppContext): Promise<User | undefined> {
     console.log(ctx.session);
 
-    return ctx.session.user;
+    if (ctx.session) {
+      console.log(ctx.session.toJSON());
+      ctx.session.count = 1;
+    }
+
+    if (ctx.session) {
+      return ctx.session.user;
+    }
   }
 
   @Query(() => Boolean)
@@ -69,14 +74,12 @@ export class UserResolver {
       throw new ApolloError("用户名或密码错误。", "WRONG_USERNAME_OR_PASSWORD");
     }
 
-    console.log(ctx.session.user);
-
-    ctx.session.user = user;
     return user;
   }
 
   @Mutation(() => Boolean)
-  async userLogout() {
+  async userLogout(@Ctx() ctx: AppContext) {
+    ctx.session = null;
     return true;
   }
 }

@@ -5,7 +5,7 @@ import { ApolloServer } from "apollo-server-koa";
 import { buildSchema } from "type-graphql";
 import { GraphQLSchema, printSchema } from "graphql";
 import { useContainer, createConnection } from "typeorm";
-import fs, { copySync } from "fs-extra";
+import fs from "fs-extra";
 import { Container } from "typedi";
 import responseTimeMiddleware from "koa-response-time";
 import corsMiddleware from "@koa/cors";
@@ -14,14 +14,11 @@ import redisStore from "koa-redis";
 import {
   fieldExtensionsEstimator, getComplexity, simpleEstimator
 } from "graphql-query-complexity";
-import router from "koa-router";
-import c from "config";
 
 import {
   APP_VAR_DIR, APP_PORT, APP_SECRET, QUERY_COMPLEXITY_LIMIT
 } from "./config";
 import { UserResolver } from "./resolver";
-import { AppContext } from "./context";
 import { genSecret, redis } from "./utils";
 import * as entities from "./entity";
 
