@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import {
-  Query, Resolver, Ctx, Mutation, Arg, Int
+  Query, Resolver, Ctx, Mutation, Arg, Int, Authorized
 } from "type-graphql";
 import { Service } from "typedi";
 import { InjectRepository } from "typeorm-typedi-extensions";
@@ -16,7 +16,7 @@ export class UserResolver {
   @InjectRepository()
   private readonly userRepository!: UserRepository
 
-
+  @Authorized()
   @Query(() => [User], {
     complexity: ({ args, childComplexity }) => {
       return 1 + childComplexity + (args.take ?? 0);
@@ -65,6 +65,9 @@ export class UserResolver {
       throw new ApolloError("用户名或密码错误。", "WRONG_USERNAME_OR_PASSWORD");
     }
 
+    if (ctx.session) {
+      ctx.session.user = user;
+    }
     return user;
   }
 
