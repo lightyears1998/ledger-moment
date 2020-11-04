@@ -16,9 +16,6 @@ export class LegerResolver {
 
   @Query(() => [Ledger])
   async ledgers(@Ctx() ctx: AppContext): Promise<Ledger[]> {
-    // TODO 在 state 中存放状态。
-    if (ctx.state.user) {
-      return [];
-    }
+    return this.ledgerRepository.find();
   }
 }
