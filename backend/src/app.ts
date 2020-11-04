@@ -1,4 +1,4 @@
-import path, { resolve } from "path";
+import path from "path";
 
 import Koa from "koa";
 import { ApolloServer } from "apollo-server-koa";
@@ -18,10 +18,11 @@ import {
 import {
   APP_VAR_DIR, APP_PORT, APP_SECRET, QUERY_COMPLEXITY_LIMIT
 } from "./config";
-import { UserResolver } from "./resolver";
 import { genSecret, redis } from "./utils";
 import * as entities from "./entity";
 import * as resolvers from "./resolver";
+import { authChecker } from "./auth/auth-checker";
+import { userStateMiddleware } from "./auth/user-state-middleware";
 
 
 async function setupDatabase(): Promise<void> {
@@ -49,7 +50,8 @@ async function setupDatabase(): Promise<void> {
 async function setupGraphQLSchema(): Promise<GraphQLSchema> {
   const schema = await buildSchema({
     resolvers: [resolvers.UserResolver, resolvers.LegerResolver],
-    container: Container
+    container: Container,
+    authChecker: authChecker
   });
   const schemaPath = path.join(APP_VAR_DIR, "./schema.graphql");
   await fs.writeFile(schemaPath, printSchema(schema));
@@ -100,6 +102,7 @@ async function setupKoa(server: ApolloServer): Promise<Koa> {
   app.use(responseTimeMiddleware({ hrtime: true }));
   app.use(corsMiddleware({ credentials: true }));
   app.use(sessionMiddleware({ key: "moment:sess", store: redisStore({ client: redis }) }, app));
+  app.use(userStateMiddleware);
   app.use(server.getMiddleware());
 
   return app;
