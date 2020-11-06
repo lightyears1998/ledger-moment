@@ -1,20 +1,37 @@
 import bcrypt from "bcrypt";
 import {
-  Query, Resolver, Ctx, Mutation, Arg, Int, Authorized
+  Query, Resolver, Ctx, Mutation, Arg, Int, Authorized, FieldResolver, ResolverInterface, Root
 } from "type-graphql";
 import { Service } from "typedi";
 import { InjectRepository } from "typeorm-typedi-extensions";
 import { ApolloError } from "apollo-server";
 
-import { User } from "../entity";
+import { Ledger, User } from "../entity";
 import { AppContext } from "../context";
 import { UserRepository } from "../repo";
+import { LedgerRepository } from "../repo/LegerRepository";
 
 @Service()
 @Resolver(() => User)
-export class UserResolver {
+export class UserResolver implements ResolverInterface<User> {
   @InjectRepository()
   private readonly userRepository!: UserRepository
+
+  @InjectRepository()
+  private readonly ledgerRepository!: LedgerRepository
+
+  @FieldResolver()
+  async ledgers(
+    @Root() user: User,
+    @Arg("skip", () => Int, { nullable: true, defaultValue: 0 }) skip: number,
+    @Arg("take", () => Int, { nullable: true, defaultValue: 20 }) take: number
+  ): Promise<Ledger[]> {
+    return this.ledgerRepository.find({
+      where: { owner: user },
+      skip: skip,
+      take: take
+    });
+  }
 
   @Authorized()
   @Query(() => [User], {
@@ -31,9 +48,10 @@ export class UserResolver {
   }
 
   @Query(() => User, { nullable: true })
-  async whoami(@Ctx() ctx: AppContext): Promise<User | undefined> {
-    if (ctx.session) {
-      return ctx.session.user;
+  async me(@Ctx() ctx: AppContext): Promise<User | undefined> {
+    if (ctx.session && ctx.session.userId) {
+      const userId = ctx.session.userId;
+      return this.userRepository.findOne({ userId });
     }
   }
 
@@ -66,7 +84,7 @@ export class UserResolver {
     }
 
     if (ctx.session) {
-      ctx.session.user = user;
+      ctx.session.userId = user.userId;
     }
     return user;
   }

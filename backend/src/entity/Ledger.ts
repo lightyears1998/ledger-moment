@@ -4,8 +4,10 @@ import {
 import {
   Column,
   CreateDateColumn,
-  Entity, PrimaryGeneratedColumn, UpdateDateColumn
+  Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn
 } from "typeorm";
+
+import { User } from ".";
 
 
 @Entity()
@@ -14,6 +16,10 @@ export class Ledger {
   @Field(() => ID)
   @PrimaryGeneratedColumn("uuid")
   ledgerId!: string
+
+  @Field(() => User)
+  @ManyToOne(() => User, user => user.ledgers)
+  owner!: User
 
   @Field()
   @Column()

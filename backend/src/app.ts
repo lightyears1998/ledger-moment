@@ -101,7 +101,9 @@ async function setupKoa(server: ApolloServer): Promise<Koa> {
 
   app.use(responseTimeMiddleware({ hrtime: true }));
   app.use(corsMiddleware({ credentials: true }));
-  app.use(sessionMiddleware({ key: "moment:sess", store: redisStore({ client: redis }) }, app));
+  app.use(sessionMiddleware({
+    maxAge: 1000 * 60 * 60 * 24 * 7, key: "moment:sess", store: redisStore({ client: redis })
+  }, app));
   app.use(userStateMiddleware);
   app.use(server.getMiddleware());
 
