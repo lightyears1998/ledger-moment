@@ -1,5 +1,5 @@
 import {
-  Query, Resolver, Ctx, Arg, Mutation, Authorized, FieldResolver, ResolverInterface, Root
+  Query, Resolver, Ctx, Arg, Mutation, Authorized, FieldResolver, ResolverInterface, Root, ID
 } from "type-graphql";
 import { Service } from "typedi";
 import { InjectRepository } from "typeorm-typedi-extensions";
@@ -32,5 +32,12 @@ export class LegerResolver implements ResolverInterface<Ledger> {
   @Mutation(() => Ledger)
   async addLedger(@Ctx() ctx: AppUserContext, @Arg("name") name: string): Promise<Ledger> {
     return this.ledgerRepository.save(this.ledgerRepository.create({ owner: { userId: ctx.state.userId }, name }));
+  }
+
+  @Authorized()
+  @Mutation(() => ID)
+  async removeLedgerByName(@Ctx() ctx: AppUserContext, @Arg("name") name: string): Promise<number> {
+    const ledgers = this.ledgerRepository.find({ where: { owner: ctx.getSessionUser() } });
+    this.ledgerRepository.softRemove();
   }
 }

@@ -1,10 +1,11 @@
 import { AuthChecker } from "type-graphql";
 
-import { AppContext } from "../context";
+import { AppUserContext } from "../context";
 
-export const authChecker: AuthChecker<AppContext> = ({ context }, roles) => {
+
+export const authChecker: AuthChecker<AppUserContext> = ({ context: ctx }, roles) => {
   if (roles.length === 0) {
-    if (context.state.userId) {
+    if (ctx.getSessionUser()) {
       return true;
     }
   }
