@@ -23,6 +23,7 @@ import * as entities from "./entity";
 import * as resolvers from "./resolver";
 import { authChecker } from "./auth/auth-checker";
 import { userStateMiddleware } from "./auth/user-state-middleware";
+import { setupUserContext } from "./context";
 
 
 async function setupDatabase(): Promise<void> {
@@ -106,6 +107,8 @@ async function setupKoa(server: ApolloServer): Promise<Koa> {
   }, app));
   app.use(userStateMiddleware);
   app.use(server.getMiddleware());
+
+  setupUserContext(app);
 
   return app;
 }
