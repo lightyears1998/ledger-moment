@@ -20,7 +20,11 @@ export class UserResolver implements ResolverInterface<User> {
   @InjectRepository()
   private readonly ledgerRepository!: LedgerRepository
 
-  @FieldResolver()
+  @FieldResolver({
+    complexity: ({ args, childComplexity }) => {
+      return 1 + childComplexity * (args.take ?? 0);
+    }
+  })
   async ledgers(
     @Root() user: User,
     @Arg("skip", () => Int, { nullable: true, defaultValue: 0 }) skip: number,
@@ -33,10 +37,17 @@ export class UserResolver implements ResolverInterface<User> {
     });
   }
 
+  @FieldResolver(() => Int)
+  async ledgerCount(
+    @Root() user: User,
+  ): Promise<number> {
+    return this.ledgerRepository.count({ where: { owner: user } });
+  }
+
   @Authorized()
   @Query(() => [User], {
     complexity: ({ args, childComplexity }) => {
-      return 1 + childComplexity + (args.take ?? 0);
+      return 1 + childComplexity * (args.take ?? 0);
     }
   })
   async users(
