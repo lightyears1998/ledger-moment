@@ -120,7 +120,7 @@ async function bootstrap() {
   const app = await setupKoa(server);
 
   await new Promise((resolve) => {
-    app.listen({ port: APP_PORT }, resolve);
+    app.listen({ host: "localhost", port: APP_PORT }, resolve);
   });
 
   console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
