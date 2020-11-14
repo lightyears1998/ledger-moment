@@ -21,8 +21,8 @@ import {
 import { genSecret, redis } from "./utils";
 import * as entities from "./entity";
 import * as resolvers from "./resolver";
-import { authChecker } from "./auth/auth-checker";
-import { userStateMiddleware } from "./auth/user-state-middleware";
+import { authChecker } from "./auth/AuthChecker";
+import { appUserContextMiddleware } from "./auth/AppUserContextMiddleware";
 import { setupUserContext } from "./context";
 
 
@@ -105,7 +105,7 @@ async function setupKoa(server: ApolloServer): Promise<Koa> {
   app.use(sessionMiddleware({
     maxAge: 1000 * 60 * 60 * 24 * 7, key: "moment:sess", store: redisStore({ client: redis })
   }, app));
-  app.use(userStateMiddleware);
+  app.use(appUserContextMiddleware);
   app.use(server.getMiddleware());
 
   setupUserContext(app);

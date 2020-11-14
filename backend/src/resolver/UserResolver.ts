@@ -7,7 +7,7 @@ import { InjectRepository } from "typeorm-typedi-extensions";
 import { ApolloError } from "apollo-server";
 
 import { Ledger, User } from "../entity";
-import { AppContext } from "../context";
+import { AppContext, AppUserContext } from "../context";
 import { UserRepository } from "../repo";
 import { LedgerRepository } from "../repo/LegerRepository";
 
@@ -59,11 +59,8 @@ export class UserResolver implements ResolverInterface<User> {
   }
 
   @Query(() => User, { nullable: true })
-  async me(@Ctx() ctx: AppContext): Promise<User | undefined> {
-    if (ctx.session && ctx.session.userId) {
-      const userId = ctx.session.userId;
-      return this.userRepository.findOne({ userId });
-    }
+  async me(@Ctx() ctx: AppUserContext): Promise<User | undefined> {
+    return ctx.getSessionUser();
   }
 
   @Query(() => Boolean)
