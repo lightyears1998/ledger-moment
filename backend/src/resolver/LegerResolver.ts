@@ -1,4 +1,3 @@
-import { length } from "class-validator";
 import {
   Query, Resolver, Ctx, Arg, Mutation, Authorized, FieldResolver, ResolverInterface, Root, ID
 } from "type-graphql";
