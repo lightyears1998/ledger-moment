@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "lint": "eslint pages --ext .ts,.tsx",
+    "lint": "eslint .",
     "build": "next build",
     "start": "next start"
   },
