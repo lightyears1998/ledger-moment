@@ -36,10 +36,22 @@ export class LegerResolver implements ResolverInterface<Ledger> {
   }
 
   @Authorized()
-  @Mutation(() => ID)
-  async removeLedgerByName(@Ctx() ctx: AppUserContext, @Arg("name") name: string): Promise<number> {
+  @Mutation(() => [ID])
+  async removeLedgersByName(@Ctx() ctx: AppUserContext, @Arg("name") name: string): Promise<string[]> {
     const ledgers = await this.ledgerRepository.find({ where: { owner: ctx.getSessionUser(), name } });
-    const removeCount = (await this.ledgerRepository.remove(ledgers)).length;
-    return removeCount;
+    const removedLedgers = (await this.ledgerRepository.remove(ledgers));
+    return removedLedgers.map(ledger => ledger.ledgerId);
+  }
+
+  @Authorized()
+  @Mutation(() => Boolean)
+  async removeLedgerByID(@Ctx() ctx:AppUserContext, @Arg("id") ledgerId: string): Promise<boolean> {
+    const ledger = await this.ledgerRepository.findOne({ where: { owner: ctx.getSessionUser(), ledgerId: ledgerId } });
+    if (!ledger) {
+      return false;
+    }
+
+    await this.ledgerRepository.remove(ledger);
+    return true;
   }
 }
