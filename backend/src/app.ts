@@ -8,6 +8,7 @@ import { useContainer, createConnection } from "typeorm";
 import fs from "fs-extra";
 import { Container } from "typedi";
 import responseTimeMiddleware from "koa-response-time";
+import compressMiddleware from "koa-compress";
 import corsMiddleware from "@koa/cors";
 import sessionMiddleware from "koa-session";
 import redisStore from "koa-redis";
@@ -107,6 +108,7 @@ async function setupKoa(server: ApolloServer): Promise<Koa> {
     maxAge: 1000 * 60 * 60 * 24 * 7, key: "moment:sess", store: redisStore({ client: redis })
   }, app));
   app.use(appUserContextMiddleware);
+  app.use(compressMiddleware());
   app.use(server.getMiddleware());
 
   setupUserContext(app);
