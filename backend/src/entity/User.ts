@@ -19,7 +19,6 @@ export class User {
   @Column()
   username!: string
 
-  @Field()
   @Column()
   passwordHash!: string
 
