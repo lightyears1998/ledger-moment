@@ -1,3 +1,4 @@
+import { length } from "class-validator";
 import {
   Query, Resolver, Ctx, Arg, Mutation, Authorized, FieldResolver, ResolverInterface, Root, ID
 } from "type-graphql";
@@ -37,7 +38,8 @@ export class LegerResolver implements ResolverInterface<Ledger> {
   @Authorized()
   @Mutation(() => ID)
   async removeLedgerByName(@Ctx() ctx: AppUserContext, @Arg("name") name: string): Promise<number> {
-    const ledgers = this.ledgerRepository.find({ where: { owner: ctx.getSessionUser() } });
-    this.ledgerRepository.softRemove();
+    const ledgers = await this.ledgerRepository.find({ where: { owner: ctx.getSessionUser(), name } });
+    const removeCount = (await this.ledgerRepository.remove(ledgers)).length;
+    return removeCount;
   }
 }
