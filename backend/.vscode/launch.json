@@ -16,7 +16,10 @@
         "<node_internals>/**"
       ],
       "type": "pwa-node",
-      "preLaunchTask": "tsc: watch - tsconfig.json"
+      "preLaunchTask": "tsc: watch - tsconfig.json",
+      "env": {
+        "NODE_OPTIONS": "--require source-map-support/register"
+      }
     }
   ]
 }
