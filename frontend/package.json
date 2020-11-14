@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "lint": "eslint pages --ext .ts,.tsx",
     "build": "next build",
     "start": "next start"
   },
@@ -25,11 +26,16 @@
     "sass": "^1.29.0"
   },
   "devDependencies": {
+    "@lightyears1998/eslint-config-lightyears-style": "^1.4.0",
     "@types/axios": "^0.14.0",
     "@types/node": "^14.11.10",
-    "@types/react": "^16.9.53",
+    "@types/react": "^16.9.56",
+    "@typescript-eslint/eslint-plugin": "^4.7.0",
+    "@typescript-eslint/parser": "^4.7.0",
     "commitizen": "^4.2.2",
     "cz-conventional-changelog": "3.3.0",
+    "eslint": "^7.13.0",
+    "eslint-plugin-import": "^2.22.1",
     "typescript": "^4.0.3"
   }
 }

@@ -1,0 +1,19 @@
+env:
+  es6: true
+  # node: true
+  browser: true
+parser: '@typescript-eslint/parser'
+parserOptions:
+  project: ./tsconfig.json
+plugins:
+  - '@typescript-eslint'
+  - import
+extends:
+  - plugin:@typescript-eslint/recommended
+  - "@lightyears1998/lightyears-style"
+globals:
+  Atomics: readonly
+  SharedArrayBuffer: readonly
+rules:
+  no-console:
+    - off
