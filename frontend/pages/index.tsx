@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
-import styles from '../styles/Home.module.css'
+import styles from '../styles/Home.module.scss'
 import axios from 'axios'
 
 export default function Home() {
