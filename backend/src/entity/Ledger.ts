@@ -25,6 +25,7 @@ export class Ledger {
   @Column()
   name!: string
 
+
   @Field()
   @CreateDateColumn()
   createdAt!: Date

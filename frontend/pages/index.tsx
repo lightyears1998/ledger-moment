@@ -1,17 +1,16 @@
-import Head from 'next/head'
-import { useEffect, useState } from 'react'
-import styles from '../styles/Home.module.scss'
-import axios from 'axios'
+import Head from "next/head";
 
-export default function Home() {
-  const [title, setTitle] = useState('')
+import styles from "./index.module.scss";
 
+export default function HomePage(): JSX.Element {
   return (
     <div className={styles.container}>
       <Head>
         <title>Ledger Moment</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      <h1>刻刻账本</h1>
     </div>
-  )
+  );
 }
