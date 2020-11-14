@@ -16,7 +16,7 @@ import {
 } from "graphql-query-complexity";
 
 import {
-  APP_VAR_DIR, APP_PORT, APP_SECRET, QUERY_COMPLEXITY_LIMIT
+  APP_VAR_DIR, APP_HOST, APP_PORT, APP_SECRET, QUERY_COMPLEXITY_LIMIT, APP_PROXY
 } from "./config";
 import { genSecret, redis } from "./utils";
 import * as entities from "./entity";
@@ -98,6 +98,7 @@ async function setupApolloServer(schema: GraphQLSchema) {
 async function setupKoa(server: ApolloServer): Promise<Koa> {
   const app = new Koa();
 
+  app.proxy = APP_PROXY;
   app.keys = [APP_SECRET ? APP_SECRET : genSecret()];
 
   app.use(responseTimeMiddleware({ hrtime: true }));
@@ -123,7 +124,7 @@ async function bootstrap() {
     app.listen({ host: "localhost", port: APP_PORT }, resolve);
   });
 
-  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
+  console.log(`🚀 Server ready at http://${APP_HOST}:${APP_PORT}${server.graphqlPath}`);
 }
 
 bootstrap();
