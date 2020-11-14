@@ -6,7 +6,7 @@ app:
     false
   secret: null
   session:
-    key: ledger-moment
+    key: moment
 
 query:
   complexity-limit: 65535
