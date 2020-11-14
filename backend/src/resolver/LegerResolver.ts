@@ -25,13 +25,13 @@ export class LegerResolver implements ResolverInterface<Ledger> {
   @Authorized()
   @Query(() => [Ledger])
   async ledgers(@Ctx() ctx: AppUserContext): Promise<Ledger[]> {
-    return this.ledgerRepository.find({ owner: { userId: ctx.state.userId } });
+    return this.ledgerRepository.find({ owner: ctx.getSessionUser() });
   }
 
   @Authorized()
   @Mutation(() => Ledger)
   async addLedger(@Ctx() ctx: AppUserContext, @Arg("name") name: string): Promise<Ledger> {
-    return this.ledgerRepository.save(this.ledgerRepository.create({ owner: { userId: ctx.state.userId }, name }));
+    return this.ledgerRepository.save(this.ledgerRepository.create({ owner: ctx.getSessionUser(), name }));
   }
 
   @Authorized()
