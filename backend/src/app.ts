@@ -20,8 +20,6 @@ import {
   APP_VAR_DIR, APP_HOST, APP_PORT, APP_SECRET, QUERY_COMPLEXITY_LIMIT, APP_PROXY
 } from "./config";
 import { genSecret, redis } from "./utils";
-import * as entities from "./entity";
-import * as resolvers from "./resolver";
 import { authChecker } from "./auth/AuthChecker";
 import { appUserContextMiddleware } from "./auth/AppUserContextMiddleware";
 import { setupUserContext } from "./context";
@@ -39,19 +37,14 @@ async function setupDatabase(): Promise<void> {
     database: dbPath,
     synchronize: true,
     logging: "all",
-    entities: [
-      entities.User,
-      entities.Account,
-      entities.Ledger,
-      entities.Record
-    ]
+    entities: [`${__dirname}/entity/**/*.{ts,js}`]
   });
 }
 
 
 async function setupGraphQLSchema(): Promise<GraphQLSchema> {
   const schema = await buildSchema({
-    resolvers: [resolvers.UserResolver, resolvers.LegerResolver],
+    resolvers: [`${__dirname}/resolver/**/*.{ts,js}`],
     container: Container,
     authChecker: authChecker
   });

@@ -1,7 +1,7 @@
 import { Service } from "typedi";
 import { EntityRepository, Repository } from "typeorm";
 
-import { Account } from "../entity";
+import { Account, Record } from "../entity";
 
 
 @Service()

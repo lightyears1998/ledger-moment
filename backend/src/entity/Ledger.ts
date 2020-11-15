@@ -29,7 +29,7 @@ export class Ledger {
   @Column()
   remark!: string
 
-  @Field()
+  @Field(() => [Account])
   @OneToMany(() => Account, account => account.ledger)
   accounts!: Account[]
 

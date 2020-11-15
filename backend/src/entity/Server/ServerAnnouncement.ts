@@ -1,30 +1,31 @@
-import { Field, ObjectType } from "type-graphql";
 import {
-  Column,
-  CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn
+  Field, ID, ObjectType
+} from "type-graphql";
+import {
+  Column, CreateDateColumn, Entity, PrimaryGeneratedColumn
 } from "typeorm";
-
-@ObjectType()
-export class Server {
-  @Field({ nullable: true })
-  latestAnnouncement?: ServerAnnouncement
-}
 
 
 @Entity()
+@ObjectType()
 export class ServerAnnouncement {
   @PrimaryGeneratedColumn("increment")
+  @Field(() => ID)
   announcementId!: number
 
   @Column()
+  @Field()
   title!: string
 
   @Column()
+  @Field()
   content!: string
 
   @CreateDateColumn()
+  @Field()
   createdAt!: Date
 
-  @UpdateDateColumn()
+  @CreateDateColumn()
+  @Field()
   updatedAt!: Date
 }
