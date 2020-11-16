@@ -8,7 +8,9 @@ import { User } from "../entity";
 export const appUserContextMiddleware: Middleware<DefaultState, AppUserContext> = async (ctx, next) => {
   if (ctx.session && ctx.session.userId) {
     const userId = ctx.session.userId;
-    ctx.setSessionUser(await getManager().findOne(User, { where: { userId } }));
+    const user = await getManager().findOne(User, { where: { userId } });
+
+    ctx.setSessionUser(user);
   }
 
   return next();

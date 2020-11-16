@@ -1,11 +1,12 @@
 import {
-  Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, Unique, UpdateDateColumn
+  Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn, Unique, UpdateDateColumn
 } from "typeorm";
 import {
   Field, ID, ObjectType
 } from "type-graphql";
 
 import { Ledger } from "./Ledger";
+import { Role } from "./Role";
 
 @ObjectType()
 @Entity()
@@ -14,6 +15,10 @@ export class User {
   @Field(() => ID)
   @PrimaryGeneratedColumn("increment")
   userId!: number
+
+  @ManyToMany(() => Role)
+  @JoinTable()
+  roles!: Role[]
 
   @Field()
   @Column()

@@ -1,20 +1,24 @@
 import os from "os";
 
 import {
-  FieldResolver, Query, Resolver, ResolverInterface
+  Arg,
+  Authorized,
+  FieldResolver, Mutation, Query, Resolver, ResolverInterface
 } from "type-graphql";
 import { Service } from "typedi";
-import { EntityManager, getManager } from "typeorm";
-import { InjectManager } from "typeorm-typedi-extensions";
+import { Repository } from "typeorm";
+import { InjectRepository } from "typeorm-typedi-extensions";
 
-import { Server, ServerAnnouncement } from "../entity";
+import {
+  RoleName, Server, ServerAnnouncement
+} from "../entity";
 
 
 @Service()
 @Resolver(() => Server)
 export class ServerResolver implements ResolverInterface<Server> {
-  @InjectManager()
-  manager!: EntityManager
+  @InjectRepository(ServerAnnouncement)
+  announcementRepository!: Repository<ServerAnnouncement>
 
   @FieldResolver()
   async loadAveragePerCpu(): Promise<number[]> {
@@ -24,16 +28,30 @@ export class ServerResolver implements ResolverInterface<Server> {
 
   @FieldResolver()
   async latestAnnouncement(): Promise<ServerAnnouncement | undefined> {
-    return this.manager.getRepository(ServerAnnouncement).findOne({ order: { updatedAt: "DESC" } });
+    return this.announcementRepository.findOne({ order: { updatedAt: "DESC" } });
   }
 
   @FieldResolver()
   async announcements(): Promise<ServerAnnouncement[]> {
-    return getManager().getRepository(ServerAnnouncement).find({ order: { updatedAt: "DESC" } });
+    return this.announcementRepository.find({ order: { updatedAt: "DESC" } });
   }
 
   @Query(() => Server)
   async server(): Promise<Server> {
     return new Server();
+  }
+
+  @Authorized([RoleName.SERVER_ADMIN])
+  @Mutation(() => ServerAnnouncement)
+  async addServerAnnouncement(
+    @Arg("title") title: string,
+    @Arg("content") content: string
+  ): Promise<ServerAnnouncement> {
+    const announcement = this.announcementRepository.create({
+      title,
+      content
+    });
+
+    return this.announcementRepository.save(announcement);
   }
 }
