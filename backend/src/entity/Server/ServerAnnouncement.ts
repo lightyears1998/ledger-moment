@@ -2,8 +2,10 @@ import {
   Field, ID, ObjectType
 } from "type-graphql";
 import {
-  Column, CreateDateColumn, Entity, PrimaryGeneratedColumn
+  Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn
 } from "typeorm";
+
+import { User } from "../User";
 
 
 @Entity()
@@ -16,6 +18,10 @@ export class ServerAnnouncement {
   @Column()
   @Field()
   title!: string
+
+  @ManyToOne(() => User)
+  @Field()
+  by!: User
 
   @Column()
   @Field()
