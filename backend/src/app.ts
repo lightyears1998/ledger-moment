@@ -23,6 +23,7 @@ import { genSecret, redis } from "./utils";
 import { authChecker } from "./auth/AuthChecker";
 import { appUserContextMiddleware } from "./auth/AppUserContextMiddleware";
 import { setupUserContext } from "./context";
+import { RoleService } from "./service/RoleService";
 
 
 async function setupDatabase(): Promise<void> {
@@ -39,6 +40,8 @@ async function setupDatabase(): Promise<void> {
     logging: "all",
     entities: [`${__dirname}/entity/**/*.{ts,js}`]
   });
+
+  await Container.get(RoleService).init();
 }
 
 
