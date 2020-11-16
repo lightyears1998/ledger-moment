@@ -1,5 +1,7 @@
+import os from "os";
+
 import {
-  FieldResolver, Resolver, ResolverInterface
+  FieldResolver, Query, Resolver, ResolverInterface
 } from "type-graphql";
 import { Service } from "typedi";
 import { EntityManager, getManager } from "typeorm";
@@ -15,6 +17,12 @@ export class ServerResolver implements ResolverInterface<Server> {
   manager!: EntityManager
 
   @FieldResolver()
+  async loadAveragePerCpu(): Promise<number[]> {
+    const cpuCount = os.cpus().length;
+    return os.loadavg().map(load => load / cpuCount);
+  }
+
+  @FieldResolver()
   async latestAnnouncement(): Promise<ServerAnnouncement | undefined> {
     return this.manager.getRepository(ServerAnnouncement).findOne({ order: { updatedAt: "DESC" } });
   }
@@ -22,5 +30,10 @@ export class ServerResolver implements ResolverInterface<Server> {
   @FieldResolver()
   async announcements(): Promise<ServerAnnouncement[]> {
     return getManager().getRepository(ServerAnnouncement).find({ order: { updatedAt: "DESC" } });
+  }
+
+  @Query(() => Server)
+  async server(): Promise<Server> {
+    return new Server();
   }
 }
