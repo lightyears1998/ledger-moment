@@ -26,7 +26,7 @@ export class Ledger {
   name!: string
 
   @Field()
-  @Column()
+  @Column({ default: "" })
   remark!: string
 
   @Field(() => [Account])
