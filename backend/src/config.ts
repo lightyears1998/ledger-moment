@@ -2,7 +2,6 @@ import path from "path";
 
 import config from "config";
 
-
 const getConfig = <T>(configPath: string, defaultValue?: T): T => {
   try {
     return config.get<T>(configPath);
@@ -13,7 +12,6 @@ const getConfig = <T>(configPath: string, defaultValue?: T): T => {
     throw err;
   }
 };
-
 
 // APP
 export const APP_VAR_DIR = path.join(process.cwd(), "./var");

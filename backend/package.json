@@ -45,7 +45,7 @@
     "typeorm-typedi-extensions": "^0.2.3"
   },
   "devDependencies": {
-    "@lightyears1998/eslint-config-lightyears-style": "^1.2.0",
+    "@lightyears1998/eslint-config-lightyears-style": "1.5.0",
     "@types/config": "^0.0.36",
     "@types/fs-extra": "^9.0.2",
     "@types/ioredis": "^4.17.6",

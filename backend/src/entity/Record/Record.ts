@@ -3,7 +3,6 @@ import {
   CreateDateColumn, Entity, PrimaryGeneratedColumn, TableInheritance, UpdateDateColumn
 } from "typeorm";
 
-
 @ObjectType()
 @Entity()
 @TableInheritance({ column: { type: "int", name: "type" } })

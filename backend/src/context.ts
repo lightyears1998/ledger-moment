@@ -13,7 +13,6 @@ export interface AppSession extends Session {
  */
 export type AppContext = Context & { session: AppSession | null }
 
-
 export type AppUserState = {
   user?: User
 }
@@ -23,7 +22,6 @@ export type AppUserContext = AppContext & {
   setSessionUser: (user: User | undefined) => void
   getSessionUser: () => User | undefined
 }
-
 
 export function setupUserContext(app: Application): void {
   app.context.setSessionUser = function (this: AppUserContext, user: User | undefined) {

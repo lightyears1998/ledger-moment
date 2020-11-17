@@ -9,7 +9,6 @@ import {
 
 import { Account, User } from ".";
 
-
 @Entity()
 @ObjectType()
 export class Ledger {

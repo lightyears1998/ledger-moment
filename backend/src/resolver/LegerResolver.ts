@@ -8,7 +8,6 @@ import { AppUserContext } from "../context";
 import { Ledger, User } from "../entity";
 import { LedgerRepository } from "../repo/LegerRepository";
 
-
 @Service()
 @Resolver(() => Ledger)
 export class LegerResolver implements ResolverInterface<Ledger> {

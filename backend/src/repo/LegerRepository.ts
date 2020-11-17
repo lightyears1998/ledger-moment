@@ -6,7 +6,7 @@ import { Account, Ledger } from "../entity";
 @Service()
 @EntityRepository(Ledger)
 export class LedgerRepository extends Repository<Ledger> {
-  addAccount(ledger: Ledger, account: Account) {
-    return;
+  addAccount(ledgerId: number, account: Account) {
+    const ledger = this.findOneOrFail({ where: { ledgerId } });
   }
 }

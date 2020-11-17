@@ -4,7 +4,6 @@ import {
 
 import { ServerAnnouncement } from "./ServerAnnouncement";
 
-
 @ObjectType()
 export class Server {
   @Field(() => [Float])

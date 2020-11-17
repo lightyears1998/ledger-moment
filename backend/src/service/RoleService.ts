@@ -4,7 +4,6 @@ import { InjectManager } from "typeorm-typedi-extensions";
 
 import { Role, RoleName } from "../entity";
 
-
 @Service()
 export class RoleService {
   @InjectManager()

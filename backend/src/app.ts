@@ -25,7 +25,6 @@ import { appUserContextMiddleware } from "./auth/AppUserContextMiddleware";
 import { setupUserContext } from "./context";
 import { RoleService } from "./service/RoleService";
 
-
 async function setupDatabase(): Promise<void> {
   const dbPath = path.join(APP_VAR_DIR, "./database.sqlite3");
   await fs.ensureDir(path.dirname(dbPath));
@@ -44,7 +43,6 @@ async function setupDatabase(): Promise<void> {
   await Container.get(RoleService).init();
 }
 
-
 async function setupGraphQLSchema(): Promise<GraphQLSchema> {
   const schema = await buildSchema({
     resolvers: [`${__dirname}/resolver/**/*.{ts,js}`],
@@ -57,7 +55,6 @@ async function setupGraphQLSchema(): Promise<GraphQLSchema> {
 
   return schema;
 }
-
 
 async function setupApolloServer(schema: GraphQLSchema) {
   const server = new ApolloServer({

@@ -15,7 +15,6 @@ import {
   RoleName, Server, ServerAnnouncement
 } from "../entity";
 
-
 @Service()
 @Resolver(() => Server)
 export class ServerResolver implements ResolverInterface<Server> {

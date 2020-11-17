@@ -4,7 +4,6 @@ import { getManager } from "typeorm";
 import { AppUserContext } from "../context";
 import { User } from "../entity";
 
-
 export const appUserContextMiddleware: Middleware<DefaultState, AppUserContext> = async (ctx, next) => {
   if (ctx.session && ctx.session.userId) {
     const userId = ctx.session.userId;

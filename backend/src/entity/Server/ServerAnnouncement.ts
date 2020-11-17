@@ -7,7 +7,6 @@ import {
 
 import { User } from "../User";
 
-
 @Entity()
 @ObjectType()
 export class ServerAnnouncement {
