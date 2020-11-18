@@ -1,4 +1,4 @@
-import Application, { Context } from "koa";
+import Application, { ParameterizedContext } from "koa";
 import { Session } from "koa-session";
 
 import { User } from "./entity";
@@ -11,7 +11,7 @@ export interface AppSession extends Session {
  * @types/koa-session 内建补全了 BaseContext 的类型定义，
  * 因此这里直接使用 Context 就好。
  */
-export type AppContext = Context & { session: AppSession | null }
+export type AppContext = ParameterizedContext<Record<string, unknown>> & { session: AppSession | null }
 
 export type AppUserState = {
   user?: User

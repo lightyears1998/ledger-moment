@@ -1,16 +1,19 @@
-import { ApolloError } from "apollo-server";
 import {
-  Arg, Args, Authorized, Ctx, ID, Query, Resolver, UseMiddleware
+  Args, Authorized, Ctx, Mutation, Query, Resolver, UseMiddleware
 } from "type-graphql";
 import { InjectRepository } from "typeorm-typedi-extensions";
 
-import { AppUserContext } from "../../context";
-import { Record } from "../../entity";
+import { ContextAfterLedgerBelongsToContextUserGuard, LedgerBelongsToContextUserGuard } from "../Ledger/LedgerGuard";
+import { Record, SetBalanceRecord } from "../../entity";
 import { AccountRepository, LedgerRepository } from "../../repo";
 import { RecordRepository } from "../../repo/RecordRepository";
-import { AccountBelongsToContextUserGuard, ContextAfterAccountBelongsToContextUserGuard } from "../Account/AccountGuard";
+import {
+  AccountAccessibleByContextUserGuard, AccountExistsGuard, AccountExistsGuardContext
+} from "../Account/AccountGuard";
 
-import { GetRecordsOfAccountArgs } from "./GetRecordsOfAccountArgs";
+import {
+  AddSetBalanceRecordArgs, GetRecordsOfAccountArgs, GetRecordsOfLedgerArgs
+} from "./ArgsType";
 
 @Resolver(() => Record)
 export class RecordResolver {
@@ -24,21 +27,25 @@ export class RecordResolver {
   recordRepository!: RecordRepository
 
   @Authorized()
-  @UseMiddleware(AccountBelongsToContextUserGuard("accountId"))
+  @UseMiddleware([AccountExistsGuard("accountId", "account"), AccountAccessibleByContextUserGuard("account")])
   @Query(() => [Record])
-  async recordsOfAccount(@Ctx() ctx: ContextAfterAccountBelongsToContextUserGuard, @Args() {}: GetRecordsOfAccountArgs): Promise<Record[]> {
+  async recordsOfAccount(@Ctx() ctx: AccountExistsGuardContext, @Args() {}: GetRecordsOfAccountArgs): Promise<Record[]> {
     const account = ctx.state.account;
     return this.recordRepository.findByAccount(account);
   }
 
   @Authorized()
+  @UseMiddleware(LedgerBelongsToContextUserGuard())
   @Query(() => [Record])
-  async recordsOfLedger(@Ctx() ctx: AppUserContext, @Arg("ledgerId", () => ID) ledgerId: string): Promise<Record[]> {
-    const ledger = await this.ledgerRepository.findOneOrFail({ where: { ledgerId }, relations: ["owner"] });
-    if (ledger.owner.userId !== ctx.getSessionUser()?.userId) {
-      throw new ApolloError("该 Ledger 不属于当前用户。");
-    }
-
+  async recordsOfLedger(@Ctx() ctx: ContextAfterLedgerBelongsToContextUserGuard, @Args() {}: GetRecordsOfLedgerArgs): Promise<Record[]> {
+    const ledger = ctx.state.ledger;
     return this.recordRepository.findByLedger(ledger);
+  }
+
+  @Authorized()
+  @Mutation(() => SetBalanceRecord)
+  async addSetBalanceRecord(@Ctx() ctx: unknown, @Args() { accountId, balance }: AddSetBalanceRecordArgs): Promise<SetBalanceRecord> {
+    console.log(ctx, accountId, balance);
+    throw new Error("!!");
   }
 }

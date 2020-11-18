@@ -2,10 +2,11 @@ import {
   Field, Float, ObjectType
 } from "type-graphql";
 import {
-  Column, Entity, ManyToOne, PrimaryGeneratedColumn
+  Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn
 } from "typeorm";
 
 import { Ledger } from "./Ledger";
+import { Record } from "./Record";
 
 @ObjectType()
 @Entity()
@@ -28,4 +29,8 @@ export class Account {
   @Field(() => Float)
   @Column()
   balance!: number
+
+  @Field(() => [Record])
+  @OneToMany(() => Record, record => record.account)
+  records!: Record[]
 }

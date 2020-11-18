@@ -1,2 +1,2 @@
 export * from "./RecordResolver";
-export * from "./GetRecordsOfAccountArgs";
+export * from "./ArgsType";
