@@ -13,6 +13,10 @@ export class AccountRepository extends Repository<Account> {
   @InjectRepository()
   private readonly ledgerRepository!: LedgerRepository
 
+  async findById(accountId: string): Promise<Account | undefined> {
+    return this.findOne({ where: { accountId } });
+  }
+
   async findByLedgerId(ledgerId: string): Promise<Account[]> {
     return this.find({ where: { ledger: { ledgerId } } });
   }

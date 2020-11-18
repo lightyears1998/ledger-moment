@@ -1,6 +1,6 @@
 import { ApolloError } from "apollo-server";
 import {
-  Arg, Authorized, Ctx, ID, Query, Resolver
+  Arg, Args, Authorized, Ctx, ID, Query, Resolver, UseMiddleware
 } from "type-graphql";
 import { InjectRepository } from "typeorm-typedi-extensions";
 
@@ -8,6 +8,9 @@ import { AppUserContext } from "../../context";
 import { Record } from "../../entity";
 import { AccountRepository, LedgerRepository } from "../../repo";
 import { RecordRepository } from "../../repo/RecordRepository";
+import { AccountBelongsToContextUserGuard, ContextAfterAccountBelongsToContextUserGuard } from "../Account/AccountGuard";
+
+import { GetRecordsOfAccountArgs } from "./GetRecordsOfAccountArgs";
 
 @Resolver(() => Record)
 export class RecordResolver {
@@ -21,13 +24,10 @@ export class RecordResolver {
   recordRepository!: RecordRepository
 
   @Authorized()
+  @UseMiddleware(AccountBelongsToContextUserGuard("accountId"))
   @Query(() => [Record])
-  async recordsOfAccount(@Ctx() ctx: AppUserContext, @Arg("accountId", () => ID) accountId: string): Promise<Record[]> {
-    const account = await this.accountRepository.findOneOrFail({ where: { accountId }, relations: ["ledger", "ledger.owner"] });
-    if (account.ledger.owner.userId !== ctx.getSessionUser()?.userId) {
-      throw new ApolloError("该 Account 不属于当前用户。");
-    }
-
+  async recordsOfAccount(@Ctx() ctx: ContextAfterAccountBelongsToContextUserGuard, @Args() {}: GetRecordsOfAccountArgs): Promise<Record[]> {
+    const account = ctx.state.account;
     return this.recordRepository.findByAccount(account);
   }
 

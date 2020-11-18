@@ -10,10 +10,10 @@ import { Service } from "typedi";
 import { Repository } from "typeorm";
 import { InjectRepository } from "typeorm-typedi-extensions";
 
-import { AppUserContext } from "../context";
+import { AppUserContext } from "../../context";
 import {
   RoleName, Server, ServerAnnouncement
-} from "../entity";
+} from "../../entity";
 
 @Service()
 @Resolver(() => Server)

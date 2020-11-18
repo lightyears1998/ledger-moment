@@ -4,11 +4,11 @@ import {
 import { Service } from "typedi";
 import { InjectRepository } from "typeorm-typedi-extensions";
 
-import { AppUserContext } from "../context";
+import { AppUserContext } from "../../context";
 import {
   Account, Ledger, User
-} from "../entity";
-import { LedgerRepository } from "../repo/LegerRepository";
+} from "../../entity";
+import { LedgerRepository } from "../../repo/LegerRepository";
 
 @Service()
 @Resolver(() => Ledger)

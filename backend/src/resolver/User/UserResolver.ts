@@ -6,10 +6,10 @@ import { Service } from "typedi";
 import { InjectRepository } from "typeorm-typedi-extensions";
 import { ApolloError } from "apollo-server";
 
-import { Ledger, User } from "../entity";
-import { AppContext, AppUserContext } from "../context";
-import { UserRepository } from "../repo";
-import { LedgerRepository } from "../repo/LegerRepository";
+import { Ledger, User } from "../../entity";
+import { AppContext, AppUserContext } from "../../context";
+import { UserRepository } from "../../repo";
+import { LedgerRepository } from "../../repo/LegerRepository";
 
 @Service()
 @Resolver(() => User)
