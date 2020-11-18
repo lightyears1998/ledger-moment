@@ -5,7 +5,9 @@ import { Service } from "typedi";
 import { InjectRepository } from "typeorm-typedi-extensions";
 
 import { AppUserContext } from "../context";
-import { Ledger, User } from "../entity";
+import {
+  Account, Ledger, User
+} from "../entity";
 import { LedgerRepository } from "../repo/LegerRepository";
 
 @Service()
@@ -18,7 +20,12 @@ export class LegerResolver implements ResolverInterface<Ledger> {
   async owner(
     @Root() ledger: Ledger
   ): Promise<User> {
-    return this.ledgerRepository.createQueryBuilder().relation(Ledger, "owner").of(ledger).loadOne<User>() as Promise<User>;
+    return this.ledgerRepository.getOwner(ledger);
+  }
+
+  @FieldResolver()
+  async accounts(@Root() ledger: Ledger): Promise<Account[]> {
+    return this.ledgerRepository.getAccounts(ledger);
   }
 
   @Authorized()
