@@ -151,14 +151,6 @@
                     },
                     {
                         "data": {
-                            "id": "c6gxg7bcfgo0",
-                            "created": 1603116722431,
-                            "text": "币种"
-                        },
-                        "children": []
-                    },
-                    {
-                        "data": {
                             "id": "c6gxg615kcw0",
                             "created": 1603116719638,
                             "text": "备注"
