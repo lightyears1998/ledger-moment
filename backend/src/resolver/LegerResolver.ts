@@ -41,6 +41,12 @@ export class LegerResolver implements ResolverInterface<Ledger> {
   }
 
   @Authorized()
+  @Mutation(() => Boolean)
+  async shareLedger(): Promise<boolean> {
+    throw new Error("todo");
+  }
+
+  @Authorized()
   @Mutation(() => [ID])
   async removeLedgersByName(@Ctx() ctx: AppUserContext, @Arg("name") name: string): Promise<string[]> {
     const ledgers = await this.ledgerRepository.find({ where: { owner: ctx.getSessionUser(), name } });

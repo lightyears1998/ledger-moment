@@ -36,4 +36,9 @@ export class User {
   @Field(() => [Ledger])
   @OneToMany(() => Ledger, ledger => ledger.owner)
   ledgers!: Ledger[]
+
+  @Field(() => [Ledger])
+  @ManyToMany(() => Ledger)
+  @JoinTable()
+  sharedLedgers!: Ledger[]
 }
