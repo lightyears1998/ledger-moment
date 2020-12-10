@@ -13,6 +13,3 @@ extends:
 globals:
   Atomics: readonly
   SharedArrayBuffer: readonly
-rules:
-  no-console:
-    - off
